@@ -27,6 +27,7 @@ from .pip_download import PipDownloader
     default=['win'],
     type=click.types.Choice(['win', 'linux']),
     multiple=True,
+    show_default=True,
 )
 @click.option(
     'py_versions',
@@ -34,6 +35,7 @@ from .pip_download import PipDownloader
     default=['cp37'],
     type=click.types.Choice(PyVersionEnum.all_versions()),
     multiple=True,
+    show_default=True,
 )
 @click.option('-i', '--index-url')
 @click.option('--extra-index-url')
@@ -53,7 +55,7 @@ def cli(
         requirements_range: bool,
 ):
     if not requirement and not requirements_file:
-        # todo show help
+        # todo show help, create Option required on of the
         raise Exception('You have to specify requirements or requirements file')
 
     if requirement and requirements_file:
@@ -71,7 +73,7 @@ def cli(
     downloader = PipDownloader(config)
 
     if requirements_range and not dry_run:
-        raise Exception  # todo
+        raise Exception  # todo create Option required if `dry_run`
 
     if requirement:
         install_requirements = downloader.parse_requirement_by_str(requirement)
