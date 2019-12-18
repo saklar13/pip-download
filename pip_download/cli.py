@@ -25,7 +25,7 @@ from .pip_download import PipDownloader
     'platforms',
     '--platform',
     default=['win'],
-    type=click.types.Choice(['win', 'linux']),
+    type=click.Choice(['win', 'linux']),
     multiple=True,
     show_default=True,
 )
@@ -33,13 +33,13 @@ from .pip_download import PipDownloader
     'py_versions',
     '--py-version',
     default=['cp37'],
-    type=click.types.Choice(PyVersionEnum.all_versions()),
+    type=click.Choice(PyVersionEnum.all_versions()),
     multiple=True,
     show_default=True,
 )
 @click.option('-i', '--index-url')
 @click.option('--extra-index-url')
-@click.option('-f', '--find-links')
+@click.option('-f', '--find-links', type=click.Path(exists=True, file_okay=False))
 @click.option('--dry-run', is_flag=True)
 @click.option('--requirements-range', is_flag=True)
 def cli(
