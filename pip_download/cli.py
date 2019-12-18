@@ -17,7 +17,7 @@ from .pip_download import PipDownloader
 )
 @click.option(
     '--dst-dir',
-    type=click.Path(exists=True, file_okay=False),
+    type=click.Path(file_okay=False),
     default=Path('.'),
     show_default=True,
 )
