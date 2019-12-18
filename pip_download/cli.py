@@ -3,12 +3,12 @@ from typing import Optional, Iterable
 
 import click
 
-from pip_download import PipDownloaderConfig, PyVersionEnum
-from pip_download import PipDownloader
+from .pip_download import PipDownloaderConfig, PyVersionEnum
+from .pip_download import PipDownloader
 
 
 @click.command()
-@click.argument('requirements_str', required=False)
+@click.argument('requirement', required=False)
 @click.option(
     '-r',
     '--requirements',
@@ -54,11 +54,11 @@ def cli(
 ):
     if not requirement and not requirements_file:
         # todo show help
-        raise Exception('You have to specify requirements_str or requirements_str file')
+        raise Exception('You have to specify requirements or requirements file')
 
     if requirement and requirements_file:
         # todo show help
-        raise Exception('Only requirements_str or requirements_str file')
+        raise Exception('Only requirement or requirements file')
 
     config = PipDownloaderConfig(
         dst_dir=dst_dir,

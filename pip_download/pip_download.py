@@ -13,7 +13,7 @@ from piptools.repositories import PyPIRepository
 from piptools.resolver import Resolver
 from pydantic import BaseModel, HttpUrl, AnyUrl
 
-from download_file import download_file
+from .download_file import download_file
 
 
 class PlatformEnum(Enum):
@@ -207,8 +207,8 @@ class PipDownloader:
 
 if __name__ == '__main__':
     def test():
-        dst_dir = Path('dep')
-        dst_dir.mkdir(exist_ok=True)
+        dst_dir = Path('dep')  # todo remove it
+        dst_dir.mkdir(exist_ok=True)  # todo mkdir in package if it doesn't exists
 
         conf = PipDownloaderConfig(dst_dir=dst_dir)
 
