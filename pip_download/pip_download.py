@@ -97,6 +97,7 @@ class PipDownloader:
         all_candidates = itertools.chain.from_iterable(
             map(self._get_suitable_candidates, requirements_set)
         )
+        self._conf.dst_dir.mkdir(exist_ok=True)
         self._download_candidates(all_candidates)
 
     def _get_suitable_candidates(
@@ -202,19 +203,3 @@ class PipDownloader:
             session=self._repository.session,
             options=self._repository.options,
         )
-
-
-if __name__ == '__main__':
-    def test():
-        dst_dir = Path('dep')  # todo remove it
-        dst_dir.mkdir(exist_ok=True)  # todo mkdir in package if it doesn't exists
-
-        conf = PipDownloaderConfig(dst_dir=dst_dir)
-
-        pip_downloader = PipDownloader(conf)
-        install_requirements = pip_downloader.parse_requirement_from_file(
-            Path('requirements.in')
-        )
-        pip_downloader.download(install_requirements)
-
-    test()
