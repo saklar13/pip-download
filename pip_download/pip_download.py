@@ -72,8 +72,7 @@ class PipDownloaderConfig(BaseModel):
     download_wheels: bool = True
     index_url: Optional[HttpUrl]
     extra_index_url: Optional[HttpUrl]
-    find_links: Optional[AnyUrl]  # todo test file path is correct?
-    log_level: str = 'INFO'
+    find_links: Optional[Path]
 
 
 class PipDownloader:
@@ -85,7 +84,7 @@ class PipDownloader:
     def _pip_args(self):
         args = []
         if self._conf.index_url is not None:
-            args.extend(['--index-url', str(self._conf.index_url)])  # todo test it
+            args.extend(['--index-url', str(self._conf.index_url)])
         if self._conf.extra_index_url is not None:
             args.extend(['--extra-index-url', str(self._conf.extra_index_url)])
         if self._conf.find_links is not None:
