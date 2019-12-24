@@ -1,5 +1,6 @@
 import itertools
 import re
+import urllib.request
 import zipfile
 from enum import Enum
 from operator import attrgetter
@@ -9,7 +10,6 @@ from typing import List, Set, Iterator, Generator, Optional, Tuple
 from pip._internal.models.candidate import InstallationCandidate
 from pip._internal.req import parse_requirements, InstallRequirement
 from pip._internal.wheel import Wheel
-import requests
 from pip._vendor.packaging.requirements import Requirement
 from piptools.repositories import PyPIRepository
 from piptools.resolver import Resolver
@@ -159,9 +159,7 @@ class PipDownloader:
     ) -> None:
         with zipfile.ZipFile(self._conf.to_archive, 'w') as zip_file:
             for candidate in candidates:
-                resp = requests.get(candidate.link.url)
-                data = resp.content
-
+                data = urllib.request.urlopen(candidate.link.url).read()
                 zip_file.writestr(candidate.link.filename, data)
 
     def _resolve_dependencies(
