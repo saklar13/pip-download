@@ -21,6 +21,7 @@ from .pip_download import PipDownloader
     default=Path('.'),
     show_default=True,
 )
+@click.option('--to-archive', type=click.Path(dir_okay=False, exists=False))
 @click.option(
     'platforms',
     '--platform',
@@ -46,6 +47,7 @@ def cli(
         requirement: Optional[str],
         requirements_file: Optional[Path],
         dst_dir: Path,
+        to_archive: Optional[Path],
         platforms: Iterable[str],
         py_versions: Iterable[str],
         index_url: Optional[str],
@@ -64,6 +66,8 @@ def cli(
 
     config = PipDownloaderConfig(
         dst_dir=dst_dir,
+        to_archive=to_archive,
+        dry_run=dry_run,
         required_platforms=platforms,
         required_py_versions=py_versions,
         index_url=index_url,
