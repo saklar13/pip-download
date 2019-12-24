@@ -1,5 +1,7 @@
 import itertools
 import re
+import urllib.request
+import zipfile
 from enum import Enum
 from operator import attrgetter
 from pathlib import Path
@@ -66,6 +68,8 @@ class PyVersionEnum(Enum):
 
 class PipDownloaderConfig(BaseModel):
     dst_dir: Path = Path('.')
+    to_archive: Optional[Path]
+    dry_run: bool = False
     platforms: Set[PlatformEnum] = {PlatformEnum.ANY_WIN}
     py_versions: Set[PyVersionEnum] = {PyVersionEnum.CP37}
     download_sources: bool = True
@@ -97,8 +101,12 @@ class PipDownloader:
         all_candidates = itertools.chain.from_iterable(
             map(self._get_suitable_candidates, requirements_set)
         )
-        self._conf.dst_dir.mkdir(exist_ok=True)
-        self._download_candidates(all_candidates)
+
+        if self._conf.to_archive is not None:
+            self._download_candidates_to_archive(all_candidates)
+        else:
+            self._conf.dst_dir.mkdir(exist_ok=True)
+            self._download_candidates(all_candidates)
 
     def _get_suitable_candidates(
             self, req: InstallRequirement
@@ -146,6 +154,14 @@ class PipDownloader:
                 candidate.link.url, self._conf.dst_dir, candidate.link.filename
             )
 
+    def _download_candidates_to_archive(
+            self, candidates: Iterator[InstallationCandidate]
+    ) -> None:
+        with zipfile.ZipFile(self._conf.to_archive, 'w') as zip_file:
+            for candidate in candidates:
+                data = urllib.request.urlopen(candidate.link.url).read()
+                zip_file.writestr(candidate.link.filename, data)
+
     def _resolve_dependencies(
             self, constraints: Iterator[InstallRequirement]
     ) -> Tuple[Set[InstallRequirement], Set[InstallRequirement]]:
@@ -155,22 +171,24 @@ class PipDownloader:
 
         return best_match_req_set, range_req_set
 
-    @staticmethod
-    def _get_download_dependencies_message(req_set: Set[InstallRequirement]) -> str:
-        return '\n'.join(map(str, sorted(req_set, key=attrgetter('name'))))
+    def _print_requirements(self, req_set: Set[InstallRequirement]) -> str:
+        text = '\n'.join(map(str, sorted(req_set, key=attrgetter('name'))))
+        if self._conf.dry_run:
+            print(text)
+        return text
 
     def resolve_dependencies(
             self, constraints: Iterator[InstallRequirement]
     ) -> Set[InstallRequirement]:
         req_set, _ = self._resolve_dependencies(constraints)
-        print(self._get_download_dependencies_message(req_set))
+        self._print_requirements(req_set)
         return req_set
 
     def resolve_range_dependencies(
             self, constraints: Iterator[InstallRequirement]
     ) -> Set[InstallRequirement]:
         _, req_set = self._resolve_dependencies(constraints)
-        print(self._get_download_dependencies_message(req_set))
+        self._print_requirements(req_set)
         return req_set
 
     def _get_all_candidates(self, name: str) -> List[InstallationCandidate]:
