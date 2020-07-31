@@ -3,3 +3,6 @@ dep/
 build/
 *.egg-info
 dist/
+_test.py
+.pip-download-cache/
+.tox/

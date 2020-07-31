@@ -1,0 +1,46 @@
+language: python
+python: 3.7
+jobs:
+  include:
+    - env: TOXENV=build
+    - env: TOXENV=pre-commit
+    - stage: Create GitHub release
+      env: TOXENV=build
+      before_deploy:
+        - export AUTHOR_EMAIL="$(git log -1 $TRAVIS_COMMIT --pretty="%cE")"
+        - export AUTHOR_NAME="$(git log -1 $TRAVIS_COMMIT --pretty="%aN")"
+        - export GIT_TAG="$(cat version.txt | tr -d ' \t\n\r')"
+        - git config --local user.name $AUTHOR_NAME
+        - git config --local user.email $AUTHOR_EMAIL
+        - git tag $GIT_TAG
+      deploy:
+        provider: releases
+        skip_cleanup: true
+        draft: true
+        api_key:
+          secure: "nvzPqxwOGbRRBtPRKK65oI0jue6nrU9qvcBOaxBL6Ch4IToocXvA3WAVLxusDV7X8UcMfwLF8FcjvezpU5OVR50K5lCFw80eVvMUpHBkzYzicSvq13ZUogCm0uxm4Oq6orjY8MmNhshakkL4wUqIAp9BM5ToA2j5kXEplDUzFxarkl+I78WVlPDBDfPDaEGNJ5UOaLdfqyJF70XUr0OS+ivctajFPbSVmTf3lqPrrV9HsmpBVIskJ/cZxRHw9rVE3JSlq7Q1S8AMgumBHWbx6fF3bUFzETWKuEoUJqdaRtJwX2C8VvTWkPOTU5IjGJ+VxMrje15ZW6Cddmrf+O7acIYawUjib8ldbVyP6kdYg/E/tRSqjTTjd8ZopUnSdXEZylaDMyIGEmY09xCnhETC+V4Lk4FuDPkBKAPuHelsoN85YSSOqJAgK0rHwAItBVx31nIni67eyj/H7mpE8dHd+P3slFFVWnhz6mLZ2lSYiJ1HjYBoWo18cHmHc94wbJTdqkpgo/NODS3qotwGGSSLGOKJMGZ0foqaix6qOTmvq+YlJBWg4ccoo2NQYpQ8Fnvwds8U1ugG/EnJ/ygSsErb2ow+mRk0wvCwAobKDsKPaCKAqx9rkBV1ZHWDeSs3GhVyByIFhQDBoGa3Vi/6LFZ0bkJmbXmbpJFnYbFWqW2Mgck="
+        file_glob: true
+        file: dist/*
+        name: pip-download $GIT_TAG
+        target_commitish: master
+        on:
+          branch: master
+    - stage: Check version
+      language: bash
+      install:
+        - git clone https://github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_REPO_SLUG
+        - cd $TRAVIS_REPO_SLUG
+        - git checkout -qf $TRAVIS_PULL_REQUEST_BRANCH
+      script: "! git diff --exit-code --quiet origin/master version.txt"
+
+install:
+  - pip install tox
+
+script: tox
+
+stages:
+  - name: Check version
+    if: branch = master AND type = pull_request
+  - name: Test
+  - name: Create GitHub release
+    if: branch = master AND type != pull_request
