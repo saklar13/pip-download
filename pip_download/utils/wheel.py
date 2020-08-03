@@ -21,7 +21,7 @@ def is_compatible_py_version(wheel: Wheel, py_versions: Set[str]) -> bool:
 def is_compatible_platform(wheel: Wheel, platforms: Set[str]) -> bool:
     for wheel_plat in wheel.plats:
         for supported_plat in platforms:
-            if supported_plat in wheel_plat:
+            if supported_plat in wheel_plat or wheel_plat == "any":
                 return True
     return False
 
@@ -31,8 +31,6 @@ def get_supported_platforms(platforms: Iterable[str]) -> Set[str]:
         platforms = {t.platform for t in sys_tags()}
     else:
         platforms = set(platforms)
-
-    platforms |= {"any"}
     return platforms
 
 
