@@ -2,12 +2,12 @@ from pathlib import Path
 from typing import Iterable, Optional
 
 import click
+from pkg_resources import get_distribution
 
 from pip_download.pip_downloader import PipDownloader
 from pip_download.utils.cli_helpers import PathPath
 
-_version_file_path = Path(__file__).parent.parent / "version.txt"
-version = _version_file_path.open().read().strip()
+version = get_distribution("pip-download").version
 
 
 @click.command()
