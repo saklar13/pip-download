@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from functools import partial
 from pathlib import Path
 from typing import Generator, Iterable, List, Optional, Set, Union
@@ -132,6 +133,15 @@ class PipDownloader:
         versions = set(req.specifier.filter(str(c.version) for c in candidates))
         return (c for c in candidates if str(c.version) in versions)
 
-    def _get_all_candidates_for_package(self, name: str) -> List[InstallationCandidate]:
+    @contextmanager
+    def _allow_all_wheels(self):
         with self._repository.allow_all_wheels():
+            try:
+                self._repository.finder.find_all_candidates.cache_clear()
+                yield
+            finally:
+                self._repository.finder.find_all_candidates.cache_clear()
+
+    def _get_all_candidates_for_package(self, name: str) -> List[InstallationCandidate]:
+        with self._allow_all_wheels():
             return self._repository.find_all_candidates(name)
