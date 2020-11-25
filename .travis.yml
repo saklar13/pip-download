@@ -33,7 +33,7 @@ jobs:
         provider: pypi
         user: "__token__"
         password:
-          secure: "Jtj2ogHvUrHjusCyPrrvcTluTz6JVLqmCwHHu8VKmh2XgjLq6kHPXqgl5XSTYoPIq9o2Zs5NDFD7ufkoblpy3E7QtwShP72oCQlTcO1HMFyK9dmKfUaPk59T3BjshmXQSRp16Tw9Z5tJduH8+Zy3EtsBT7+H2nYvT2rBlginCQgjnIwDlPiUPu18KJzezbBygAq5sYXU5/xf96gTASPmv4Sy16hNeSl89M96CiXft9cowZecGhU9z/FltHiKOny/egkLJTpxsJXHq9YYTRJgVC1+PjcJSKlcCUVXkiBaNR9uUb4KF4vEcn1Fn5DcnfnlzfdhzyO+g1/dwLRjrKQQ4BQd2Y2HWFfEfydCjwfcRpqDBSlQBckEAsxRj+Vdj8RbsWElcgUX+BBCGtEkX96e14GRl/zanXscLA2og0J3OSvgsI51eKdRou1rL5mqCPeuUUSFSThm0hjpjJ+dnE+cFgAlm7mgrCMpDvrpDsEtF4AkRSGYyALZs2pGRN4EbQUSp6XfH7HI9F8+DRt2V6h7cMk+gN7ZY02VMQshB4i3oUTOOB4PVLXp4okbJLXJIyIpaB4z/q/y/ly/qJ3puDbqTXeGVVfdNhvylM4JWHGjB3acFWA1sxQxV8z+2HzRko3QC2P33XdwDXy0kK9SXc2iabRMss8k8S6z8dwGd+lMgyQ="
+          secure: "LccoaDgFbLlkn3uTmBDygozz1jIINoKBp4H4HZJ+uLG+JjO9Kwdi125ZepDawk52Dy2o4dMHsv18oxroOJqyDnJGWX4mmicZCYGjwYIPuvSKtjNUDOBkcSaCcxkBCsVco703FSfw/0ze5eGhf+KdGv0cu1Meyq+C+lEM2zv36/FdwzJ7h60I/kyR7kHBrD5+Nh39WFPVCjfH4tdfc55ZqKcBwSX1/2Mwlu623/cq344dQLcuPnp7SLipXIw9XkllscFeUc70cybPq8tS4ZcTR9SksWkCrvHPkNcXVGi/U55QNprRHDBfOuu6hR+xpzm92kO0EXkiljiaC2pnrMQ6dC0gdC9xj4AEYpu3oUG2H1/H/wfbUb7f2Ou/bBApfUZBPsqPqwZFirReDXh7mOzyqv0JQs+dFsCwxzXnAZKiHDPoi+KpbY+Q+8kMXqipHteF78uH219oyuYMwLYcY//QiDa758/iEjYhynWL8gZyHG5eHlnB519nbn+4iubcR30VHD43KYfOH032Qwjk3/gmpt2fHekXjWey2797K439QunAMDyBN0xKpUmdMd7r4gqu5pQwrFfGiPYTR11fD1k2a0VX4MLq481ZA3tXwyCUEPgMnjHK/qToxFs4ByqHDnibw/fJelZIFnQPoYQYFT0ImPcYBxjTtCSotgoPC15+GX4="
         on:
           tags: true
     - stage: Check version
