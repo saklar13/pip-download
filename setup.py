@@ -7,7 +7,7 @@ def read_file(file_name):
 
 
 setup(
-    name="pip-download",
+    name="saklar13-pip-download",
     version=read_file("version.txt"),
     description="downloads python packages for specified platform and python version",
     author="Kyrylo Maksymenko",

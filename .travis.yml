@@ -25,6 +25,17 @@ jobs:
         target_commitish: master
         on:
           branch: master
+    - stage: Deploy to PyPI release
+      env: TOXENV=build
+      deploy:
+        distributions: skip
+        skip_cleanup: true
+        provider: pypi
+        user: "__token__"
+        password:
+          secure: "Jtj2ogHvUrHjusCyPrrvcTluTz6JVLqmCwHHu8VKmh2XgjLq6kHPXqgl5XSTYoPIq9o2Zs5NDFD7ufkoblpy3E7QtwShP72oCQlTcO1HMFyK9dmKfUaPk59T3BjshmXQSRp16Tw9Z5tJduH8+Zy3EtsBT7+H2nYvT2rBlginCQgjnIwDlPiUPu18KJzezbBygAq5sYXU5/xf96gTASPmv4Sy16hNeSl89M96CiXft9cowZecGhU9z/FltHiKOny/egkLJTpxsJXHq9YYTRJgVC1+PjcJSKlcCUVXkiBaNR9uUb4KF4vEcn1Fn5DcnfnlzfdhzyO+g1/dwLRjrKQQ4BQd2Y2HWFfEfydCjwfcRpqDBSlQBckEAsxRj+Vdj8RbsWElcgUX+BBCGtEkX96e14GRl/zanXscLA2og0J3OSvgsI51eKdRou1rL5mqCPeuUUSFSThm0hjpjJ+dnE+cFgAlm7mgrCMpDvrpDsEtF4AkRSGYyALZs2pGRN4EbQUSp6XfH7HI9F8+DRt2V6h7cMk+gN7ZY02VMQshB4i3oUTOOB4PVLXp4okbJLXJIyIpaB4z/q/y/ly/qJ3puDbqTXeGVVfdNhvylM4JWHGjB3acFWA1sxQxV8z+2HzRko3QC2P33XdwDXy0kK9SXc2iabRMss8k8S6z8dwGd+lMgyQ="
+        on:
+          tags: true
     - stage: Check version
       language: bash
       install:
@@ -44,3 +55,5 @@ stages:
   - name: Test
   - name: Create GitHub release
     if: branch = master AND type != pull_request
+  - name: Deploy to PyPI release
+    if: tag IS present
