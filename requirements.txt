@@ -1,5 +1,0 @@
-click~=7.1
-pip-tools~=5.3
-pip>=20,<20.3
-tqdm~=4.48
-packaging~=20.4
