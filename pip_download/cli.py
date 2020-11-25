@@ -7,7 +7,7 @@ from pkg_resources import get_distribution
 from pip_download.pip_downloader import PipDownloader
 from pip_download.utils.cli_helpers import PathPath
 
-version = get_distribution("pip-download").version
+version = get_distribution("saklar13-pip-download").version
 
 
 @click.command()
