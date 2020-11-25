@@ -6,6 +6,9 @@ import click
 from pip_download.pip_downloader import PipDownloader
 from pip_download.utils.cli_helpers import PathPath
 
+_version_file_path = Path(__file__).parent.parent / "version.txt"
+version = _version_file_path.open().read().strip()
+
 
 @click.command()
 @click.argument("requirement", required=False)
@@ -44,6 +47,7 @@ from pip_download.utils.cli_helpers import PathPath
 @click.option("-f", "--find-links", type=PathPath(exists=True, file_okay=False))
 @click.option("--dry-run", is_flag=True)
 @click.option("--requirements-range", is_flag=True)
+@click.version_option(version, message="pip-download, version %(version)s")
 def cli(
     requirement: Optional[str],
     requirements_file: Optional[Path],
