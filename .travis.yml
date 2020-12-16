@@ -25,24 +25,6 @@ jobs:
         target_commitish: master
         on:
           branch: master
-    - stage: Deploy to PyPI release
-      env: TOXENV=build
-      deploy:
-        distributions: skip
-        skip_cleanup: true
-        provider: pypi
-        user: "__token__"
-        password:
-          secure: "LccoaDgFbLlkn3uTmBDygozz1jIINoKBp4H4HZJ+uLG+JjO9Kwdi125ZepDawk52Dy2o4dMHsv18oxroOJqyDnJGWX4mmicZCYGjwYIPuvSKtjNUDOBkcSaCcxkBCsVco703FSfw/0ze5eGhf+KdGv0cu1Meyq+C+lEM2zv36/FdwzJ7h60I/kyR7kHBrD5+Nh39WFPVCjfH4tdfc55ZqKcBwSX1/2Mwlu623/cq344dQLcuPnp7SLipXIw9XkllscFeUc70cybPq8tS4ZcTR9SksWkCrvHPkNcXVGi/U55QNprRHDBfOuu6hR+xpzm92kO0EXkiljiaC2pnrMQ6dC0gdC9xj4AEYpu3oUG2H1/H/wfbUb7f2Ou/bBApfUZBPsqPqwZFirReDXh7mOzyqv0JQs+dFsCwxzXnAZKiHDPoi+KpbY+Q+8kMXqipHteF78uH219oyuYMwLYcY//QiDa758/iEjYhynWL8gZyHG5eHlnB519nbn+4iubcR30VHD43KYfOH032Qwjk3/gmpt2fHekXjWey2797K439QunAMDyBN0xKpUmdMd7r4gqu5pQwrFfGiPYTR11fD1k2a0VX4MLq481ZA3tXwyCUEPgMnjHK/qToxFs4ByqHDnibw/fJelZIFnQPoYQYFT0ImPcYBxjTtCSotgoPC15+GX4="
-        on:
-          tags: true
-    - stage: Check version
-      language: bash
-      install:
-        - git clone https://github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_REPO_SLUG
-        - cd $TRAVIS_REPO_SLUG
-        - git checkout -qf $TRAVIS_PULL_REQUEST_BRANCH
-      script: "! git diff --exit-code --quiet origin/master version.txt"
 
 install:
   - pip install tox
@@ -55,5 +37,3 @@ stages:
   - name: Test
   - name: Create GitHub release
     if: branch = master AND type != pull_request
-  - name: Deploy to PyPI release
-    if: tag IS present
